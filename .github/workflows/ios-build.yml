@@ -46,12 +46,23 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             build
 
+      
       - name: Package IPA
         run: |
           mkdir -p ipa/Payload
-          cp -R Builds/DerivedData/Build/Products/Release-iphoneos/Unity-iPhone.app ipa/Payload/
+          APP_PATH="$(find Builds/DerivedData/Build/Products -maxdepth 3 -type d -name '*.app' -print -quit)"
+
+          if [ -z "$APP_PATH" ]; then
+            echo "No compiled .app found."
+            find Builds/DerivedData -maxdepth 5 -print
+            exit 1
+          fi
+
+          echo "Found app: $APP_PATH"
+          cp -R "$APP_PATH" ipa/Payload/
           cd ipa
           zip -r ../CardboardXR.ipa Payload
+          
 
       - name: Upload iPhone app
         uses: actions/upload-artifact@v4
