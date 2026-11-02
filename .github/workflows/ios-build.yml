@@ -32,7 +32,7 @@ jobs:
           targetPlatform: iOS
           unityVersion: 6000.6.0f1
           buildMethod: ProjectBootstrap.StereoBuilder.BuildIos
-          cacheUnityInstallationOnMac: true
+          cacheUnityInstallationOnMac: false
 
       - name: Compile iPhone application
         run: |
